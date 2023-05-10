@@ -8,7 +8,6 @@ const path = require('path');
 
 const BlogRoute = require('./Routes/BlogRoute')
 const CategoryRoute = require('./Routes/CategoryRoute')
-const imageUploadRoute = require('./Routes/imageUploadRoute')
 
 
 
@@ -46,7 +45,6 @@ app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 app.get("/", (req, res) => res.send("Khaled portfolio server is running..."))
 app.use('/api/v1/blog', BlogRoute);
 app.use('/api/v1/category', CategoryRoute);
-app.use('/api/v1/upload',imageUploadRoute)
 
 //All
 app.all("*", (req, res) => {
