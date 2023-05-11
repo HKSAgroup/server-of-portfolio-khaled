@@ -24,7 +24,6 @@ exports.getCategory = (req, res) => {
         res.json(category);
     }
     );
-
 }
 
 
