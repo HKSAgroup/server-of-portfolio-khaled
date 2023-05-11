@@ -10,6 +10,7 @@ const BlogRoute = require('./Routes/BlogRoute')
 const CategoryRoute = require('./Routes/CategoryRoute')
 const ClientReviewRoute = require('./Routes/ClientReviewRoute') 
 const TeamMembersRoute = require('./Routes/TeamMembersRoute')
+const WorkProjectRoute = require('./Routes/WorkProjectsRoute')
 
 
 
@@ -49,6 +50,7 @@ app.use('/api/v1/blog', BlogRoute);
 app.use('/api/v1/category', CategoryRoute);
 app.use('/api/v1/clients-review', ClientReviewRoute);
 app.use('/api/v1/team-members', TeamMembersRoute);
+app.use('/api/v1/work-projects', WorkProjectRoute);
 
 //All
 app.all("*", (req, res) => {
