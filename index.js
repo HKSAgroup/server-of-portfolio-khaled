@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const colors = require("colors")
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const path = require('path');
@@ -39,10 +40,10 @@ mongoose.connect(process.env.DATABASE_LOCAL,
     {
         useNewUrlParser: true,
         autoIndex: true
-    }).then(() => console.log("Database connected successfully"))
+    }).then(() => console.log("Database connected successfully".bgRed.red.bold))
     .catch(err => console.log(err));
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`.bgCyan.bold));
 
 // Routes
 app.get("/", (req, res) => res.send("Khaled portfolio server is running..."))
