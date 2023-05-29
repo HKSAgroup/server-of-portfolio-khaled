@@ -13,6 +13,8 @@ const ClientReviewRoute = require('./Routes/ClientReviewRoute')
 const TeamMembersRoute = require('./Routes/TeamMembersRoute')
 const WorkProjectRoute = require('./Routes/WorkProjectsRoute')
 const imageUploadRoute = require('./Routes/imageUploadRoute')
+const skillRoute = require('./Routes/SkillRoute');
+const serviceRoute = require('./Routes/ServiceRoute');
 
 
 
@@ -53,6 +55,8 @@ app.use('/api/v1/clients-review', ClientReviewRoute);
 app.use('/api/v1/team-members', TeamMembersRoute);
 app.use('/api/v1/work-projects', WorkProjectRoute);
 app.use('/api/v1/upload',imageUploadRoute)
+app.use('/api/v1/skill',skillRoute);
+app.use('/api/v1/service',serviceRoute);
 
 //All
 app.all("*", (req, res) => {
