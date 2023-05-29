@@ -3,7 +3,7 @@ const { getSkill, addSkill, getSkillDetails, deleteSkill, updateSkill } = requir
 const router = express.Router();
 
 
-router.route('/', getSkill).post(addSkill)
+router.route("/").get(getSkill).post(addSkill)
 router.route('/:id').get(getSkillDetails).delete(deleteSkill).put(updateSkill)
 
 module.exports = router;

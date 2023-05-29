@@ -3,8 +3,8 @@ const AdMember = require("../Models/TeamMembersModel");
 
 exports.AddMemberController = (req, res) => {
 
-    const adMember = new AdMember(req.body);
-    adMember.save((err, category) => {
+    const member = new AdMember(req.body);
+    member.save((err, category) => {
         if (err) {
             return res.status(400).json({
                 error: "Not able to save member in DB"
@@ -13,20 +13,20 @@ exports.AddMemberController = (req, res) => {
         res.json({
             status: "success",
             message: "data inserted successfully!",
-            adMember
+            data: member
         });
     });
 }
 
 exports.getMembers = (req, res) => {
 
-    AdMember.find().exec((err, adMember) => {
+    AdMember.find().exec((err, member) => {
         if (err) {
             return res.status(400).json({
                 error: "Member not found"
             });
         }
-        res.json(adMember);
+        res.json(member);
     }
     );
 }
@@ -67,7 +67,7 @@ exports.UpdateMemberController = (req, res) => {
     // update portfolio
     const id = req.params.id
 
-    const { image, title, name} = req.body
+    const { image, title, name } = req.body
 
     AdMember.findByIdAndUpdate(id, { image, title, name }, { new: true }).exec((err, adMember) => {
         if (err) {
