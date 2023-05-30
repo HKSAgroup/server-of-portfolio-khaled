@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 // Database Connection
-mongoose.connect(process.env.DATABASE_LOCAL,
+mongoose.connect(process.env.DATABASE,
     {
         useNewUrlParser: true,
         autoIndex: true
