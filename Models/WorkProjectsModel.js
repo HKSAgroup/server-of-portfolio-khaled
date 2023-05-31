@@ -25,15 +25,11 @@ const projectSchema = mongoose.Schema(
             type: Date,
             default: Date.now,
         },
-        filter:{
-            type: String,
-            required: true,
-        },
         category: {
             type: String,
             required: true,
         },
-        introduction: {
+        description: {
             type: String,
             required: true,
         }
