@@ -3,9 +3,9 @@ const skill = require("../Models/SkillModel");
 
 exports.addSkill = (req, res) => {
 
-    const skill = new skill(req.body)
+    const skillSet = new skill(req.body)
 
-    skill.save((err, skill) => {
+    skillSet.save((err, skill) => {
         if (err) {
             return res.status(400).json({
                 error: "Skill not found"
