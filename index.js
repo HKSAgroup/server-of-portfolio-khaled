@@ -19,7 +19,7 @@ const serviceRoute = require('./Routes/ServiceRoute');
 
 
 const { default: mongoose } = require('mongoose');
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 9000;
 const app = express();
 
 const corsFonfig = {
