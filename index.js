@@ -6,10 +6,12 @@ require('dotenv').config();
 const path = require('path');
 
 
+// import all routes
+const UserRoute = require('./Routes/UserRoute')
 
 const BlogRoute = require('./Routes/BlogRoute')
 const CategoryRoute = require('./Routes/CategoryRoute')
-const ClientReviewRoute = require('./Routes/ClientReviewRoute') 
+const ClientReviewRoute = require('./Routes/ClientReviewRoute')
 const TeamMembersRoute = require('./Routes/TeamMembersRoute')
 const WorkProjectRoute = require('./Routes/WorkProjectsRoute')
 const imageUploadRoute = require('./Routes/imageUploadRoute')
@@ -26,8 +28,8 @@ const corsFonfig = {
     origin: true,
     credentials: true,
 }
-app.use(bodyParser.json({limit:'50mb'}))
-app.use(bodyParser.urlencoded({limit:'50mb', extended:true}))
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(express.json())
 
 
@@ -48,15 +50,22 @@ mongoose.connect(process.env.DATABASE,
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`.bgCyan.bold));
 
 // Routes
-app.get("/", (req, res) => res.send("Khaled portfolio server is running..."))
+app.use('/api/v1/user', UserRoute)
 app.use('/api/v1/blog', BlogRoute);
 app.use('/api/v1/category', CategoryRoute);
 app.use('/api/v1/clients-review', ClientReviewRoute);
 app.use('/api/v1/team-members', TeamMembersRoute);
 app.use('/api/v1/work-projects', WorkProjectRoute);
-app.use('/api/v1/upload',imageUploadRoute)
-app.use('/api/v1/skill',skillRoute);
-app.use('/api/v1/service',serviceRoute);
+app.use('/api/v1/upload', imageUploadRoute)
+app.use('/api/v1/skill', skillRoute);
+app.use('/api/v1/service', serviceRoute);
+
+app.get("/", (req, res) => res.status(200).json(
+    {
+        message: "Khaled portfolio server is running...",
+        code: 200
+    }
+))
 
 //All
 app.all("*", (req, res) => {
