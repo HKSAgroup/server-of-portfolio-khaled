@@ -413,3 +413,45 @@ module.exports.verifyOtp = async (req, res) => {
             });
     }
 };
+
+
+module.exports.UpdateProfileById = async (req, res, next) => {
+    try {
+      // console.log('files', req.files)
+      // console.log('body', req.body)
+      const { id } = req.params;
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+          status: "failed",
+          code: 400,
+          message: "Id is not valid",
+        });
+      }
+      const result = await userService.UpdateProfileByIdService(
+        id,
+        req.body,
+        req.files
+      );
+      if (result.modifiedCount > 0) {
+        res.status(200).json({
+          status: "success",
+          code: 200,
+          message: "successfully update profile",
+          data: result,
+        });
+      } else {
+        res.status(400).json({
+          status: "failed",
+          code: 400,
+          message: "Couldn't update profile",
+        });
+      }
+    } catch (error) {
+      res.status(400).json({
+        status: "failed",
+        code: 400,
+        message: "Couldn't update profile",
+        error: error.message,
+      });
+    }
+  };

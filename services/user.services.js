@@ -28,4 +28,35 @@ module.exports.changePasswordService = async (id, data) => {
 
 module.exports.getAUserByIDService = async (id) => {
     return await User.findById({ _id: id });
-  };
+};
+
+module.exports.UpdateProfileByIdService = async (id, body, files) => {
+    // console.log('body,', body)
+    // console.log('files,', files)
+    const data = {
+        email: body?.email,
+        name: body?.name,
+        phoneNumber: body?.phoneNumber,
+        address: body?.address,
+        whatsappNumber: body?.whatsappNumber,
+        behance: body?.behance,
+        companyWebsite: body?.companyWebsite,
+        linkedInProfile: body?.linkedInProfile,
+        githubProfile: body?.githubProfile,
+        completionRate: body?.completionRate,
+        nid: body?.nid,
+        tin: body?.tin,
+        bin: body?.bin,
+        imageURL: files?.imageURL[0]?.filename,
+        binFile: files?.binFile?.length > 0 ? files.binFile[0].filename : null,
+        tinFile: files?.tinFile?.length > 0 ? files.tinFile[0].filename : null,
+        nidFile: files?.nidFile?.length > 0 ? files.nidFile[0].filename : null,
+    };
+
+    // console.log('data =>', data)
+    return await User.updateOne(
+        { _id: id },
+        { $set: data },
+        { runValidators: true }
+    );
+};

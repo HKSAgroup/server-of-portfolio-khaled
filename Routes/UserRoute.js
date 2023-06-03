@@ -89,21 +89,20 @@ router
    * @apiPermission everyone can see their profile with their register id
    */
   .get(userController.getAUserByID)
-//   /**
-//    * @api {put} / update profile
-//    * @apiDescription update user's and admin's profile
-//    * @apiPermission everyone can update their profile with their register id
-//    * @apiHeader {string} Authorization User's access token
-//    * @apiSuccess {Object[]} update successful
-//    * @apiError  (Unauthorized 401)  Unauthorized  Only authenticated person can access the data
-//    * @apiError  (Forbidden 403)  Forbidden  Only authenticated person can access the data
-//    */
-//   .put(
-//     // verifyToken,
-//     // uploader.single("imageURL"),
-//     uploader.fields([{ name: "imageURL", maxCount: 1 }, { name: "binFile", maxCount: 1 }, { name: "tinFile", maxCount: 1 }, { name: "nidFile", maxCount: 1 },]),
-//     userController.UpdateProfileById
-//   )
+  /**
+   * @api {put} / update profile
+   * @apiDescription update user's and admin's profile
+   * @apiPermission everyone can update their profile with their register id
+   * @apiHeader {string} Authorization User's access token
+   * @apiSuccess {Object[]} update successful
+   * @apiError  (Unauthorized 401)  Unauthorized  Only authenticated person can access the data
+   * @apiError  (Forbidden 403)  Forbidden  Only authenticated person can access the data
+   */
+  .put(
+    verifyToken,
+    // uploader.fields([{ name: "imageURL", maxCount: 1 }, { name: "binFile", maxCount: 1 }, { name: "tinFile", maxCount: 1 }, { name: "nidFile", maxCount: 1 },]),
+    userController.UpdateProfileById
+  )
 //   /**
 //      * @api {delete} / delete a user
 //      * @apiDescription update user's and admin's profile
