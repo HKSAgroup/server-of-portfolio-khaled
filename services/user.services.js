@@ -14,4 +14,14 @@ module.exports.findAUserWithPhoneNumber = async (phoneNumber) => {
 
 module.exports.makeUserAdminService = async (id) => {
     return User.updateOne({ _id: id }, { $set: { role: "super-admin" } });
-  };
+};
+
+// change password service
+module.exports.changePasswordService = async (id, data) => {
+    const hashedPassword = bcrypt.hashSync(data.confirmPassword);
+    return await User.updateOne(
+        { _id: id },
+        { $set: { password: hashedPassword } },
+        { runValidators: true }
+    );
+};

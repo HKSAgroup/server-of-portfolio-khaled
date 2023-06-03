@@ -64,18 +64,18 @@ router
    */
   .put(verifyToken, authorization("super-admin"), userController.makeUserAdmin);
 
-// router
-//   .route("/register/change-password/:id")
-//   /**
-//    * @api {patch} / update a users password
-//    * @apiDescription a user can update their password
-//    * @apiPermission any one can change their password
-//    * @apiHeader {string} Authorization User's access token
-//    * @apiSuccess {Object[]} password is changed
-//    * @apiError  (Unauthorized 401)  Unauthorized  Only authenticated person can access the data
-//    * @apiError  (Forbidden 403)  Forbidden  Only authenticated person can access the data
-//    */
-//   .patch(verifyToken, userController.changePassword);
+router
+  .route("/register/change-password/:id")
+  /**
+   * @api {patch} / update a users password
+   * @apiDescription a user can update their password
+   * @apiPermission any one can change their password
+   * @apiHeader {string} Authorization User's access token
+   * @apiSuccess {Object[]} password is changed
+   * @apiError  (Unauthorized 401)  Unauthorized  Only authenticated person can access the data
+   * @apiError  (Forbidden 403)  Forbidden  Only authenticated person can access the data
+   */
+  .patch(verifyToken, userController.changePassword);
 
 // router.route("/:id");
 // // .get(userController.getAUserByID)

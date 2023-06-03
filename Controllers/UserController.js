@@ -14,23 +14,23 @@ require("dotenv").config();
 
 module.exports.getAdmin = async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const result = await userService.getAdminService(id);
-      res.status(200).json({
-        status: "success",
-        code: 200,
-        message: "successfully getting an Admin",
-        data: result,
-      });
+        const { id } = req.params;
+        const result = await userService.getAdminService(id);
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            message: "successfully getting an Admin",
+            data: result,
+        });
     } catch (error) {
-      res.status(400).json({
-        status: "failed",
-        code: 400,
-        message: "Couldn't get an Admin",
-        error: error.message,
-      });
+        res.status(400).json({
+            status: "failed",
+            code: 400,
+            message: "Couldn't get an Admin",
+            error: error.message,
+        });
     }
-  }
+}
 
 module.exports.getAllUser = async (req, res, next) => {
     try {
@@ -203,98 +203,157 @@ module.exports.registerUser = async (req, res, next) => {
  */
 module.exports.login = async (req, res, next) => {
     try {
-      const { phoneNumber, password } = req.body;
-      if (!phoneNumber || !password) {
-        return res.status(401).json({
-          status: "failed",
-          code: 401,
-          error: "Please provide your number & password",
-        });
-      }
-  
-      // checking if user is already in our db, or not?
-      const userExists = await userService.findAUserWithPhoneNumber(phoneNumber);
-      // console.log('userExists', userExists)
-      if (!userExists) {
-        return res.status(401).json({
-          status: "failed",
-          code: 401,
-          error: "No user found. Please create an account",
-        });
-      }
-  
-      const isPasswordMatched = userExists.comparePassword(
-        password,
-        userExists.password
-      );
-      console.log('isPasswordMatched', isPasswordMatched)
-  
-      if (!isPasswordMatched) {
-        return res.status(403).json({
-          status: "failed",
-          code: 403,
-          error: "Password is not correct",
-        });
-      }
+        const { phoneNumber, password } = req.body;
+        if (!phoneNumber || !password) {
+            return res.status(401).json({
+                status: "failed",
+                code: 401,
+                error: "Please provide your number & password",
+            });
+        }
 
-      if (userExists.status === "blocked") {
-        return res.status(401).json({
-          status: "failed",
-          code: 401,
-          error: "Your'e account is blocked",
-        });
-      }
-  
-      // logout user will automatically inactive, when user again logged in , we have to make them again active.
-      if (userExists.status === "inactive") {
-        return await User.updateOne(
-          { _id: userExists?._id },
-          { $set: { status: "active" } }
+        // checking if user is already in our db, or not?
+        const userExists = await userService.findAUserWithPhoneNumber(phoneNumber);
+        // console.log('userExists', userExists)
+        if (!userExists) {
+            return res.status(401).json({
+                status: "failed",
+                code: 401,
+                error: "No user found. Please create an account",
+            });
+        }
+
+        const isPasswordMatched = userExists.comparePassword(
+            password,
+            userExists.password
         );
-      }
-  
-      const token = generateToken(userExists);
-      const { password: pwd, ...others } = userExists.toObject();
-  
-      res.status(200).json({
-        status: "success",
-        code: 200,
-        message: "successfully logged in",
-        data: { user: others, token },
-      });
-    } catch (err) {
-      res.status(400).json({
-        status: "failed",
-        code: 400,
-        message: "Couldn't login",
-        error: err.message,
-      });
-    }
-  };
+        console.log('isPasswordMatched', isPasswordMatched)
 
-  module.exports.makeUserAdmin = async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      if (!ObjectId.isValid(id)) {
-        return res.status(400).json({
-          status: "failed",
-          code: 400,
-          message: "Id is not valid",
+        if (!isPasswordMatched) {
+            return res.status(403).json({
+                status: "failed",
+                code: 403,
+                error: "Password is not correct",
+            });
+        }
+
+        if (userExists.status === "blocked") {
+            return res.status(401).json({
+                status: "failed",
+                code: 401,
+                error: "Your'e account is blocked",
+            });
+        }
+
+        // logout user will automatically inactive, when user again logged in , we have to make them again active.
+        if (userExists.status === "inactive") {
+            return await User.updateOne(
+                { _id: userExists?._id },
+                { $set: { status: "active" } }
+            );
+        }
+
+        const token = generateToken(userExists);
+        const { password: pwd, ...others } = userExists.toObject();
+
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            message: "successfully logged in",
+            data: { user: others, token },
         });
-      }
-      const result = await userService.makeUserAdminService(id);
-      res.status(200).json({
-        status: "success",
-        code: 200,
-        message: "Successfully make this user an SUPER-ADMIN",
-        data: result,
-      });
-    } catch (error) {
-      res.status(400).json({
-        status: "failed",
-        code: 400,
-        message: "Couldn't make an Admin",
-        error: error.message,
-      });
+    } catch (err) {
+        res.status(400).json({
+            status: "failed",
+            code: 400,
+            message: "Couldn't login",
+            error: err.message,
+        });
     }
-  };
+};
+
+module.exports.makeUserAdmin = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({
+                status: "failed",
+                code: 400,
+                message: "Id is not valid",
+            });
+        }
+        const result = await userService.makeUserAdminService(id);
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            message: "Successfully make this user an SUPER-ADMIN",
+            data: result,
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            code: 400,
+            message: "Couldn't make an Admin",
+            error: error.message,
+        });
+    }
+};
+
+// change password
+module.exports.changePassword = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({
+                status: "failed",
+                code: 400,
+                message: "Couldn't find this id",
+            });
+        }
+        // checking if user is already in our db, or not?
+        const userExists = await User.findById({ _id: id });
+        // console.log('userExists', userExists)
+        if (!userExists) {
+            return res.status(401).json({
+                status: "failed",
+                code: 401,
+                error: "No user found. Please create an account",
+            });
+        }
+        const isPasswordMatched = userExists.comparePassword(
+            data.oldPassword,
+            userExists.password
+        );
+        // console.log(isPasswordMatched)
+        if (!isPasswordMatched) {
+            return res.status(403).json({
+                status: "failed",
+                code: 403,
+                error: "Password is not correct",
+            });
+        }
+        const result = await userService.changePasswordService(id, data);
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                status: "success",
+                code: 200,
+                message: "Successfully updated your password",
+                data: result,
+            });
+        } else {
+            res.status(400).json({
+                status: "failed",
+                code: 400,
+                message: "Couldn't update your password",
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            code: 400,
+            message: "Couldn't update your password",
+            error: error.message,
+        });
+    }
+}
