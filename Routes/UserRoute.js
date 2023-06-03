@@ -79,7 +79,7 @@ router
 
 // router.route("/:id");
 // // .get(userController.getAUserByID)
-// router.route("/register/verify").post(userController.verifyOtp);
+router.route("/register/verify").post(userController.verifyOtp);
 
 // router
 //   .route("/register/:id")

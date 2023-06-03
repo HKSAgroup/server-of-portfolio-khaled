@@ -357,3 +357,59 @@ module.exports.changePassword = async (req, res, next) => {
         });
     }
 }
+
+module.exports.verifyOtp = async (req, res) => {
+    try {
+        // const result = await userService.registerUserService(req.body);
+        // const token = generateToken(result);
+        const otpHolder = await Otp.find({
+            phoneNumber: req.body.phoneNumber,
+        });
+        if (otpHolder.length === 0) {
+            return res.status(400).json({
+                status: "failed",
+                code: 400,
+                message: "Your'e using an Expired OTP!",
+            });
+        }
+
+        const rightOtpFind = otpHolder[otpHolder.length - 1];
+        const validUser = await bcrypt.compare(req.body.otp, rightOtpFind.otp);
+        console.log("validUser", validUser);
+
+        if (rightOtpFind.phoneNumber === req.body.phoneNumber && validUser) {
+            // console.log("render");
+
+            const salt = await bcrypt.genSalt(10);
+
+            const password = await bcrypt.hash(req.body.password, salt);
+
+            // console.log("password", password);
+
+            const user = new User(_.pick(req.body, ["phoneNumber", "password"]));
+            // console.log("user", user);
+            const token = generateToken(user);
+            const result = await user.save();
+            const OTPDelete = await Otp.deleteMany({
+                number: rightOtpFind.number,
+            });
+            return res.status(200).send({
+                status: "success",
+                code: 200,
+                message: "User Registration Successful!",
+                data: { result, token },
+            });
+        } else {
+            return res.status(400).send("Your OTP was wrong!");
+        }
+    } catch (error) {
+        res
+            .status(400)
+            .json({
+                status: "failed",
+                code: 400,
+                message: "OTP Didn't verified",
+                error: error.message,
+            });
+    }
+};
