@@ -25,3 +25,7 @@ module.exports.changePasswordService = async (id, data) => {
         { runValidators: true }
     );
 };
+
+module.exports.getAUserByIDService = async (id) => {
+    return await User.findById({ _id: id });
+  };

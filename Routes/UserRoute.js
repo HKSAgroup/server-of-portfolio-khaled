@@ -81,14 +81,14 @@ router
 // // .get(userController.getAUserByID)
 router.route("/register/verify").post(userController.verifyOtp);
 
-// router
-//   .route("/register/:id")
-//   /**
-//    * @api {get} / load a user
-//    * @apiDescription load a user with their id
-//    * @apiPermission everyone can see their profile with their register id
-//    */
-//   .get(userController.getAUserByID)
+router
+  .route("/register/:id")
+  /**
+   * @api {get} / load a user
+   * @apiDescription load a user with their id
+   * @apiPermission everyone can see their profile with their register id
+   */
+  .get(userController.getAUserByID)
 //   /**
 //    * @api {put} / update profile
 //    * @apiDescription update user's and admin's profile

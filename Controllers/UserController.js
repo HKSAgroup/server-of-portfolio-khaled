@@ -160,33 +160,33 @@ module.exports.registerUser = async (req, res, next) => {
     }
 };
 
-// module.exports.getAUserByID = async (req, res, next) => {
-//     try {
-//         const { id } = req.params;
-//         // console.log('id', id)
-//         if (!ObjectId.isValid(id)) {
-//             return res.status(400).json({
-//                 status: "failed",
-//                 code: 400,
-//                 message: "This id is not valid",
-//             });
-//         }
-//         const result = await userService.getAUserByIDService(id);
-//         res.status(200).json({
-//             status: "success",
-//             code: 200,
-//             message: "Successfully getting this user",
-//             data: result,
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             status: "failed",
-//             code: 400,
-//             message: "Couldn't get this user",
-//             error: error.message,
-//         });
-//     }
-// };
+module.exports.getAUserByID = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        // console.log('id', id)
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({
+                status: "failed",
+                code: 400,
+                message: "This id is not valid",
+            });
+        }
+        const result = await userService.getAUserByIDService(id);
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            message: "Successfully getting this user",
+            data: result,
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            code: 400,
+            message: "Couldn't get this user",
+            error: error.message,
+        });
+    }
+};
 
 
 /**
