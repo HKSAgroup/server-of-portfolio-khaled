@@ -271,3 +271,30 @@ module.exports.login = async (req, res, next) => {
       });
     }
   };
+
+  module.exports.makeUserAdmin = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+          status: "failed",
+          code: 400,
+          message: "Id is not valid",
+        });
+      }
+      const result = await userService.makeUserAdminService(id);
+      res.status(200).json({
+        status: "success",
+        code: 200,
+        message: "Successfully make this user an SUPER-ADMIN",
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: "failed",
+        code: 400,
+        message: "Couldn't make an Admin",
+        error: error.message,
+      });
+    }
+  };

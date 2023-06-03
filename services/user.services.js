@@ -11,3 +11,7 @@ module.exports.getAllUserService = async (data) => {
 module.exports.findAUserWithPhoneNumber = async (phoneNumber) => {
     return await User.findOne({ phoneNumber });
 };
+
+module.exports.makeUserAdminService = async (id) => {
+    return User.updateOne({ _id: id }, { $set: { role: "super-admin" } });
+  };

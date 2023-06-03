@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const userController = require('../Controllers/UserController')
+const authorization = require("../middleware/authorization");
+const verifyToken = require("../middleware/verifyToken");
 
 
 
@@ -51,16 +53,16 @@ router
    * @apiError  (Forbidden 403)  Forbidden  Only admin can access the data
    */
   .get(userController.getAdmin)
-//   /**
-//    * @api {put} / update an admin
-//    * @apiDescription make a user an Admin
-//    * @apiPermission only admin can access this
-//    * @apiHeader {string} Authorization User's access token
-//    * @apiSuccess {Object[]} all the admins
-//    * @apiError  (Unauthorized 401)  Unauthorized  Only authenticated person can access the data
-//    * @apiError  (Forbidden 403)  Forbidden  Only admin can access the data
-//    */
-//   .put(verifyToken, authorization("super-admin"), userController.makeUserAdmin);
+  /**
+   * @api {put} / update an admin
+   * @apiDescription make a user an Admin
+   * @apiPermission only admin can access this
+   * @apiHeader {string} Authorization User's access token
+   * @apiSuccess {Object[]} all the admins
+   * @apiError  (Unauthorized 401)  Unauthorized  Only authenticated person can access the data
+   * @apiError  (Forbidden 403)  Forbidden  Only admin can access the data
+   */
+  .put(verifyToken, authorization("super-admin"), userController.makeUserAdmin);
 
 // router
 //   .route("/register/change-password/:id")
