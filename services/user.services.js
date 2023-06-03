@@ -60,3 +60,8 @@ module.exports.UpdateProfileByIdService = async (id, body, files) => {
         { runValidators: true }
     );
 };
+
+
+module.exports.deleteAUserByIDService = async (id) => {
+    return await User.deleteOne({ _id: id })
+}

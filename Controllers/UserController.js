@@ -63,33 +63,33 @@ module.exports.getAllUser = async (req, res, next) => {
     }
 };
 
-// module.exports.deleteAUserByID = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const result = await userService.deleteAUserByIDService(id);
-//     if (!result.deletedCount) {
-//       return res.status(400).json({
-//         status: "failed",
-//         code: 400,
-//         message: "Couldn't find this user to delete",
-//       });
-//     } else {
-//       res.status(200).json({
-//         status: "success",
-//         code: 200,
-//         message: "successfully deleted this user",
-//         data: result,
-//       });
-//     }
-//   } catch (err) {
-//     res.status(400).json({
-//       status: "failed",
-//       code: 400,
-//       message: "Couldn't delete this user",
-//       error: err.message,
-//     });
-//   }
-// };
+module.exports.deleteAUserByID = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await userService.deleteAUserByIDService(id);
+    if (!result.deletedCount) {
+      return res.status(400).json({
+        status: "failed",
+        code: 400,
+        message: "Couldn't find this user to delete",
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        code: 200,
+        message: "successfully deleted this user",
+        data: result,
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      code: 400,
+      message: "Couldn't delete this user",
+      error: err.message,
+    });
+  }
+};
 
 module.exports.registerUser = async (req, res, next) => {
     try {
