@@ -27,15 +27,15 @@ router
    */
   .post(userController.registerUser);
 
-// router
-//   .route("/login")
-//   /**
-//    * @api {post} / post exists user
-//    * @apiDescription Login exists user
-//    * @apiPermission anyone can login after register
-//    * @apiSuccess {Object[]} successfully login
-//    * @apiError  User doesn't exists
-//    */ .post(userController.login);
+router
+  .route("/login")
+  /**
+   * @api {post} / post exists user
+   * @apiDescription Login exists user
+   * @apiPermission anyone can login after register
+   * @apiSuccess {Object[]} successfully login
+   * @apiError  User doesn't exists
+   */ .post(userController.login);
 
 // router.get("/me", verifyToken, userController.getMe);
 

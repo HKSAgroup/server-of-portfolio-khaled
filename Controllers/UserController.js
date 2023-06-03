@@ -42,6 +42,34 @@ module.exports.getAllUser = async (req, res, next) => {
     }
 };
 
+// module.exports.deleteAUserByID = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const result = await userService.deleteAUserByIDService(id);
+//     if (!result.deletedCount) {
+//       return res.status(400).json({
+//         status: "failed",
+//         code: 400,
+//         message: "Couldn't find this user to delete",
+//       });
+//     } else {
+//       res.status(200).json({
+//         status: "success",
+//         code: 200,
+//         message: "successfully deleted this user",
+//         data: result,
+//       });
+//     }
+//   } catch (err) {
+//     res.status(400).json({
+//       status: "failed",
+//       code: 400,
+//       message: "Couldn't delete this user",
+//       error: err.message,
+//     });
+//   }
+// };
+
 module.exports.registerUser = async (req, res, next) => {
     try {
         const user = await User.findOne({
@@ -67,7 +95,7 @@ module.exports.registerUser = async (req, res, next) => {
                 const response = await axios({
                     method: 'post',
                     url,
-                    timeout: 5000, // Timeout after 5 seconds
+                    timeout: 6000, // Timeout after 6 seconds
                 });
                 if (response.status === 200) {
                     // otp send successfully. Please try to do some work here..
@@ -87,10 +115,18 @@ module.exports.registerUser = async (req, res, next) => {
                 res.status(400).json({
                     status: "error",
                     code: 400,
-                    message: "OTP didn't send successfully!",
-                    error: error,
+                    message: "OTP didn't send successfully!, Try again",
+                    error: error.message,
                 });
             }
+        }
+        else {
+            res.status(400).json({
+                status: "error",
+                code: 400,
+                message: "Didn't worked",
+                error: error.message,
+            });
         }
 
     } catch (error) {
@@ -102,3 +138,115 @@ module.exports.registerUser = async (req, res, next) => {
         });
     }
 };
+
+// module.exports.getAUserByID = async (req, res, next) => {
+//     try {
+//         const { id } = req.params;
+//         // console.log('id', id)
+//         if (!ObjectId.isValid(id)) {
+//             return res.status(400).json({
+//                 status: "failed",
+//                 code: 400,
+//                 message: "This id is not valid",
+//             });
+//         }
+//         const result = await userService.getAUserByIDService(id);
+//         res.status(200).json({
+//             status: "success",
+//             code: 200,
+//             message: "Successfully getting this user",
+//             data: result,
+//         });
+//     } catch (error) {
+//         res.status(400).json({
+//             status: "failed",
+//             code: 400,
+//             message: "Couldn't get this user",
+//             error: error.message,
+//         });
+//     }
+// };
+
+
+/**
+ *1. Check if email & password are given
+ *2. Load user with email
+ *3. if not user, send res
+ *4. compare password,
+ *5. if password not correct, send res
+ *6. check if user is active
+ *7. if not active send res
+ *8. if account is inactive , then active again, and then give entrance to our site
+ *8. generate token
+ *9. send user and token
+ */
+module.exports.login = async (req, res, next) => {
+    try {
+      const { phoneNumber, password } = req.body;
+      if (!phoneNumber || !password) {
+        return res.status(401).json({
+          status: "failed",
+          code: 401,
+          error: "Please provide your number & password",
+        });
+      }
+  
+      // checking if user is already in our db, or not?
+      const userExists = await userService.findAUserWithPhoneNumber(phoneNumber);
+      // console.log('userExists', userExists)
+      if (!userExists) {
+        return res.status(401).json({
+          status: "failed",
+          code: 401,
+          error: "No user found. Please create an account",
+        });
+      }
+  
+      const isPasswordMatched = userExists.comparePassword(
+        password,
+        userExists.password
+      );
+      console.log('isPasswordMatched', isPasswordMatched)
+  
+      if (!isPasswordMatched) {
+        return res.status(403).json({
+          status: "failed",
+          code: 403,
+          error: "Password is not correct",
+        });
+      }
+
+      if (userExists.status === "blocked") {
+        return res.status(401).json({
+          status: "failed",
+          code: 401,
+          error: "Your'e account is blocked",
+        });
+      }
+  
+      // logout user will automatically inactive, when user again logged in , we have to make them again active.
+      if (userExists.status === "inactive") {
+        return await User.updateOne(
+          { _id: userExists?._id },
+          { $set: { status: "active" } }
+        );
+      }
+  
+      const token = generateToken(userExists);
+      const { password: pwd, ...others } = userExists.toObject();
+  
+      res.status(200).json({
+        status: "success",
+        code: 200,
+        message: "successfully logged in",
+        data: { user: others, token },
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: "failed",
+        code: 400,
+        message: "Couldn't login",
+        error: err.message,
+      });
+    }
+  };
