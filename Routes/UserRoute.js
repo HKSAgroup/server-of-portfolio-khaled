@@ -118,6 +118,6 @@ router
 // router.route("/register2/:id").put(verifyToken, authorization("super-admin", "co-admin"), userController.makeUserVerified)
 
 // user logout and update status into inactive
-// router.route("/register/updateStatus/:id").put(verifyToken, userController.userLogOut);
+router.route("/register/updateStatus/:id").put(verifyToken, userController.userLogOut);
 
 module.exports = router;

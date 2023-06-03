@@ -65,3 +65,7 @@ module.exports.UpdateProfileByIdService = async (id, body, files) => {
 module.exports.deleteAUserByIDService = async (id) => {
     return await User.deleteOne({ _id: id })
 }
+
+module.exports.userLogOutService = async (id) => {
+    return await User.updateOne({ _id: id }, { $set: { status: "inactive" } });
+  };

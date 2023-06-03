@@ -455,3 +455,31 @@ module.exports.UpdateProfileById = async (req, res, next) => {
       });
     }
   };
+
+  module.exports.userLogOut = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+          status: "failed",
+          code: 400,
+          message: "This id is not valid",
+        });
+      }
+      const result = await userService.userLogOutService(id);
+      // console.log("result", result);
+      res.status(200).json({
+        status: "success",
+        code: 200,
+        message: "Successfully logout",
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: "failed",
+        code: 400,
+        message: "Couldn't logout",
+        error: error.message,
+      });
+    }
+  };
