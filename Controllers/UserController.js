@@ -11,6 +11,27 @@ const Otp = require("../Models/OTPModel");
 // const generateToken = require("../Utils/generateToken");
 require("dotenv").config();
 
+
+module.exports.getAdmin = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const result = await userService.getAdminService(id);
+      res.status(200).json({
+        status: "success",
+        code: 200,
+        message: "successfully getting an Admin",
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: "failed",
+        code: 400,
+        message: "Couldn't get an Admin",
+        error: error.message,
+      });
+    }
+  }
+
 module.exports.getAllUser = async (req, res, next) => {
     try {
         const result = await userService.getAllUserService();
