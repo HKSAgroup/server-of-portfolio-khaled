@@ -17,15 +17,15 @@ router
    * @apiError  (Forbidden 403)  Forbidden  Only admin can access the data
    */
   .get(userController.getAllUser)
-//   /**
-//    * @api {post} / create a new user account
-//    * @apiDescription create new user account
-//    * @apiPermission everyone can create account
-//    * @apiHeader empty
-//    * @apiSuccess {Object[]} successfully create a new account
-//    * @apiError  Couldn't register
-//    */
-//   .post(userController.registerUser);
+  /**
+   * @api {post} / create a new user account
+   * @apiDescription create new user account
+   * @apiPermission everyone can create account
+   * @apiHeader empty
+   * @apiSuccess {Object[]} successfully create a new account
+   * @apiError  Couldn't register
+   */
+  .post(userController.registerUser);
 
 // router
 //   .route("/login")
