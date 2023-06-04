@@ -5,8 +5,8 @@ const { getProjectService } = require("../services/project.services");
 
 exports.AddProjectController = (req, res) => {
     //    post category
-    const project = new AdProject(req.body);
-    project.save((err, category) => {
+    const newProject = new AdProject(req.body);
+    newProject.save((err, category) => {
         if (err) {
             return res.status(400).json({
                 error: "Not able to save project in DB"
@@ -15,7 +15,7 @@ exports.AddProjectController = (req, res) => {
         res.json({
             status: "success",
             message: "data inserted successfully!",
-            project
+            data: newProject
         });
     });
 }
