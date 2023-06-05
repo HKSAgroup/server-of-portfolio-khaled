@@ -3,9 +3,9 @@ const Service = require("../Models/ServicesModel");
 
 exports.addServices = async (req, res) => {
 
-    const service = new Service(req.body);
+    const newService = new Service(req.body);
 
-    service.save((err, service) => {
+    newService.save((err, service) => {
         if (err) {
             return res.status(400).json({
                 error: "Not able to save service in DB"
